@@ -1,0 +1,54 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------< com.Aham:College-lab-managwment >-------------------
+[INFO] Building College-lab-managwment Aham_System_Menagement
+[INFO]   from pom.xml
+[INFO] --------------------------------[ war ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ College-lab-managwment ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ College-lab-managwment ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 162 source files with javac [debug parameters release 21] to target\classes
+[INFO] -------------------------------------------------------------
+[WARNING] COMPILATION WARNING : 
+[INFO] -------------------------------------------------------------
+[WARNING] /D:/SpringBoot/collele_Lab/College-lab-managwment/src/main/java/com/mainApp/responcedto/AuthResponse.java:[11,20] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /D:/SpringBoot/collele_Lab/College-lab-managwment/src/main/java/com/mainApp/responcedto/StudentResponse.java:[9,1] Generating equals/hashCode implementation but without a call to superclass, even though this class does not extend java.lang.Object. If this is intentional, add '@EqualsAndHashCode(callSuper=false)' to your type.
+[WARNING] /D:/SpringBoot/collele_Lab/College-lab-managwment/src/main/java/com/mainApp/model/StudentSubjectEnrollment.java:[13,1] Generating equals/hashCode implementation but without a call to superclass, even though this class does not extend java.lang.Object. If this is intentional, add '@EqualsAndHashCode(callSuper=false)' to your type.
+[WARNING] /D:/SpringBoot/collele_Lab/College-lab-managwment/src/main/java/com/mainApp/model/LabTimetableSlot.java:[13,1] Generating equals/hashCode implementation but without a call to superclass, even though this class does not extend java.lang.Object. If this is intentional, add '@EqualsAndHashCode(callSuper=false)' to your type.
+[WARNING] /D:/SpringBoot/collele_Lab/College-lab-managwment/src/main/java/com/mainApp/model/TeacherSubjectExpertise.java:[13,1] Generating equals/hashCode implementation but without a call to superclass, even though this class does not extend java.lang.Object. If this is intentional, add '@EqualsAndHashCode(callSuper=false)' to your type.
+[WARNING] /D:/SpringBoot/collele_Lab/College-lab-managwment/src/main/java/com/mainApp/model/Course.java:[14,1] Generating equals/hashCode implementation but without a call to superclass, even though this class does not extend java.lang.Object. If this is intentional, add '@EqualsAndHashCode(callSuper=false)' to your type.
+[WARNING] /D:/SpringBoot/collele_Lab/College-lab-managwment/src/main/java/com/mainApp/model/Attendance.java:[13,1] Generating equals/hashCode implementation but without a call to superclass, even though this class does not extend java.lang.Object. If this is intentional, add '@EqualsAndHashCode(callSuper=false)' to your type.
+[WARNING] /D:/SpringBoot/collele_Lab/College-lab-managwment/src/main/java/com/mainApp/model/LabSession.java:[18,1] Generating equals/hashCode implementation but without a call to superclass, even though this class does not extend java.lang.Object. If this is intentional, add '@EqualsAndHashCode(callSuper=false)' to your type.
+[WARNING] /D:/SpringBoot/collele_Lab/College-lab-managwment/src/main/java/com/mainApp/model/SessionCode.java:[13,1] Generating equals/hashCode implementation but without a call to superclass, even though this class does not extend java.lang.Object. If this is intentional, add '@EqualsAndHashCode(callSuper=false)' to your type.
+[WARNING] /D:/SpringBoot/collele_Lab/College-lab-managwment/src/main/java/com/mainApp/model/Lab.java:[15,1] Generating equals/hashCode implementation but without a call to superclass, even though this class does not extend java.lang.Object. If this is intentional, add '@EqualsAndHashCode(callSuper=false)' to your type.
+[WARNING] /D:/SpringBoot/collele_Lab/College-lab-managwment/src/main/java/com/mainApp/model/LabAllocation.java:[13,1] Generating equals/hashCode implementation but without a call to superclass, even though this class does not extend java.lang.Object. If this is intentional, add '@EqualsAndHashCode(callSuper=false)' to your type.
+[WARNING] /D:/SpringBoot/collele_Lab/College-lab-managwment/src/main/java/com/mainApp/model/LectureSchedule.java:[14,1] Generating equals/hashCode implementation but without a call to superclass, even though this class does not extend java.lang.Object. If this is intentional, add '@EqualsAndHashCode(callSuper=false)' to your type.
+[INFO] 12 warnings 
+[INFO] -------------------------------------------------------------
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /D:/SpringBoot/collele_Lab/College-lab-managwment/src/main/java/com/mainApp/mapper/AttendanceMapper.java:[10,2] cannot find symbol
+  symbol: class Component
+[INFO] 1 error
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  5.910 s
+[INFO] Finished at: 2026-01-26T14:33:36+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.14.1:compile (default-compile) on project College-lab-managwment: Compilation failure
+[ERROR] /D:/SpringBoot/collele_Lab/College-lab-managwment/src/main/java/com/mainApp/mapper/AttendanceMapper.java:[10,2] cannot find symbol
+[ERROR]   symbol: class Component
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

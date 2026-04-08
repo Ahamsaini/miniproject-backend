@@ -1,0 +1,61 @@
+package com.mainApp.repository;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.mainApp.model.Lab;
+import com.mainApp.model.LabSession;
+
+@Repository
+public interface LabSessionRepository extends JpaRepository<LabSession, String> {
+        List<LabSession> findByLabId(String labId);
+
+        List<LabSession> findByLabIdAndSessionDate(String labId, LocalDate sessionDate);
+
+        List<LabSession> findBySessionDate(LocalDate sessionDate);
+
+        List<LabSession> findByTeacherId(String teacherId);
+
+        List<LabSession> findBySubjectId(String subjectId);
+
+        @org.springframework.data.jpa.repository.EntityGraph(attributePaths = { "lab", "subject", "subject.course",
+                        "teacher" })
+        @org.springframework.data.jpa.repository.Query("SELECT s FROM LabSession s " +
+                        "WHERE " +
+                        "(:status IS NULL OR s.status = :status) AND " +
+                        "(:courseId IS NULL OR s.subject.course.id = :courseId) AND " +
+                        "(:semester IS NULL OR s.subject.semesterNumber = :semester) AND " +
+                        "(:section IS NULL OR s.section = :section) AND " +
+                        "(:subjectId IS NULL OR s.subject.id = :subjectId) AND " +
+                        "(:sessionDate IS NULL OR s.sessionDate = :sessionDate) AND " +
+                        "(:keyword IS NULL OR :keyword = '' OR " +
+                        "LOWER(s.lab.labName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                        "LOWER(s.subject.subjectName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                        "LOWER(s.teacher.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                        "LOWER(s.teacher.lastName) LIKE LOWER(CONCAT('%', :keyword, '%')))  " +
+                        "ORDER BY s.sessionDate DESC, s.startTime DESC")
+        org.springframework.data.domain.Page<LabSession> searchSessions(
+                        @org.springframework.data.repository.query.Param("status") com.mainApp.roles.LabSessionStatus status,
+                        @org.springframework.data.repository.query.Param("courseId") String courseId,
+                        @org.springframework.data.repository.query.Param("semester") Integer semester,
+                        @org.springframework.data.repository.query.Param("section") String section,
+                        @org.springframework.data.repository.query.Param("subjectId") String subjectId,
+                        @org.springframework.data.repository.query.Param("sessionDate") java.time.LocalDate sessionDate,
+                        @org.springframework.data.repository.query.Param("keyword") String keyword,
+                        org.springframework.data.domain.Pageable pageable);
+
+        long countBySessionDate(LocalDate sessionDate);
+
+        long countByStatus(com.mainApp.roles.LabSessionStatus status);
+
+        // Check if session exists for duplicate prevention
+        boolean existsByLabAndSessionDateAndStartTime(Lab lab, LocalDate sessionDate, LocalTime startTime);
+
+        List<LabSession> findBySubjectIdAndSubjectSemesterNumberAndSubjectCourseIdAndStatus(
+                        String subjectId, Integer semesterNumber, String courseId,
+                        com.mainApp.roles.LabSessionStatus status);
+}
