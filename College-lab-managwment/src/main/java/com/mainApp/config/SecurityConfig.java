@@ -59,7 +59,8 @@ public class SecurityConfig {
                                                 .hasAnyRole("STUDENT", "ADMIN", "TEACHER", "HOD")
 
                                                 // Allow students to view their own profile
-                                                .requestMatchers(org.springframework.http.HttpMethod.GET, "/students/*")
+                                                .requestMatchers(org.springframework.http.HttpMethod.GET, "/students/*",
+                                                                "/students/*/profile")
                                                 .hasAnyRole("STUDENT", "ADMIN", "TEACHER", "HOD")
 
                                                 // Allow teachers to view student lists (for attendance, etc.)
@@ -77,6 +78,7 @@ public class SecurityConfig {
 
                                                 // Student endpoints - allow reading sessions and submitting attendance
                                                 .requestMatchers(org.springframework.http.HttpMethod.GET,
+                                                                "/labs/sessions",
                                                                 "/labs/sessions/**")
                                                 .hasAnyRole("STUDENT", "ADMIN", "TEACHER", "HOD")
 
@@ -97,11 +99,12 @@ public class SecurityConfig {
                                                 .hasAnyRole("ADMIN", "TEACHER", "HOD")
 
                                                 // Dashboard endpoints
-                                                .requestMatchers("/dashboard/**", "/courses/dashboard/**")
+                                                .requestMatchers("/dashboard", "/dashboard/**", "/courses/dashboard",
+                                                                "/courses/dashboard/**")
                                                 .hasAnyRole("ADMIN", "TEACHER", "STUDENT", "HOD")
 
                                                 // Courses and subjects - allow all authenticated users to read
-                                                .requestMatchers("/courses/**", "/subjects/**")
+                                                .requestMatchers("/courses", "/courses/**", "/subjects", "/subjects/**")
                                                 .hasAnyRole("ADMIN", "TEACHER", "STUDENT", "HOD")
 
                                                 // All other requests require authentication
@@ -152,6 +155,8 @@ public class SecurityConfig {
                                 "http://api.aham-sug-lab.work.gd",
                                 "https://web.aham-sug-lab.work.gd",
                                 "http://web.aham-sug-lab.work.gd",
+                                "https://*.vercel.app",
+                                "https://*.railway.app",
                                 "https://miniproject-frountend-zxir.vercel.app",
                                 "https://miniproject-backend-production-6861.up.railway.app"));
 
