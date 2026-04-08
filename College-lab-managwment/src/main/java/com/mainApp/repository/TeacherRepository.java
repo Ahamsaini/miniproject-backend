@@ -42,7 +42,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, String> {
         @Query("SELECT COUNT(t) FROM Teacher t WHERE t.department = :department")
         long countByDepartment(@Param("department") String department);
 
-        @Query("SELECT t FROM Teacher t WHERE t.isApproved = false AND " +
+        @Query("SELECT t FROM Teacher t WHERE t.isApproved = false AND t.isActive = true AND " +
                         "(:department IS NULL OR t.department = :department) AND " +
                         "(:keyword IS NULL OR " +
                         "LOWER(t.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +

@@ -99,11 +99,13 @@ public class TeacherServiceImpl implements TeacherService {
         }
 
         @Override
+        @Transactional(readOnly = true)
         public Page<TeacherResponse> getAllTeachers(@lombok.NonNull Pageable pageable) {
                 return teacherRepository.findAll(pageable).map(teacherMapper::toResponse);
         }
 
         @Override
+        @Transactional(readOnly = true)
         public Page<TeacherResponse> getTeachersByDepartment(@lombok.NonNull String department,
                         @lombok.NonNull Pageable pageable) {
                 return teacherRepository.findByDepartment(department, pageable).map(teacherMapper::toResponse);
@@ -373,6 +375,7 @@ public class TeacherServiceImpl implements TeacherService {
         }
 
         @Override
+        @Transactional(readOnly = true)
         public Page<TeacherResponse> searchTeachers(String keyword, Pageable pageable) {
                 return teacherRepository.searchTeachers(keyword, pageable).map(teacherMapper::toResponse);
         }
@@ -433,15 +436,16 @@ public class TeacherServiceImpl implements TeacherService {
         }
 
         @Override
+        @Transactional(readOnly = true)
         public Page<TeacherResponse> getPendingTeachers(String department, String keyword, Pageable pageable) {
-                // Sanitize parameters: convert empty strings from frontend to null so JPA handles them correctly
+                // Sanitize parameters: convert empty strings from frontend to null so JPA
+                // handles them correctly
                 String sanitizedDepartment = (department != null && department.trim().isEmpty()) ? null : department;
                 String sanitizedKeyword = (keyword != null && keyword.trim().isEmpty()) ? null : keyword;
 
                 return teacherRepository.findPendingTeachers(sanitizedDepartment, sanitizedKeyword, pageable)
                                 .map(teacherMapper::toResponse);
         }
-
 
         @Override
         @Transactional

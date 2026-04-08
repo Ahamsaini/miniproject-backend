@@ -90,6 +90,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<StudentResponse> getAllStudents(String courseId, Integer semester, String keyword, Pageable pageable) {
         return studentRepository.searchStudents(courseId, semester, keyword, pageable).map(studentMapper::toResponse);
     }
@@ -419,6 +420,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<StudentResponse> getPendingStudents(String courseId, Integer semester, String department,
             String keyword,
             Pageable pageable) {
