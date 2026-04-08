@@ -104,8 +104,13 @@ public class SecurityConfig {
                                                 .hasAnyRole("ADMIN", "TEACHER", "STUDENT", "HOD")
 
                                                 // Courses and subjects - allow all authenticated users to read
-                                                .requestMatchers("/courses", "/courses/**", "/subjects", "/subjects/**")
+                                                .requestMatchers("/courses", "/courses/**", "/subjects", "/subjects/**", "/timetable", "/timetable/**")
                                                 .hasAnyRole("ADMIN", "TEACHER", "STUDENT", "HOD")
+
+                                                // User profile and management
+                                                .requestMatchers(org.springframework.http.HttpMethod.GET, "/users/*", "/users/username/*")
+                                                .hasAnyRole("ADMIN", "TEACHER", "STUDENT", "HOD")
+                                                .requestMatchers("/users/**").hasAnyRole("ADMIN", "HOD")
 
                                                 // All other requests require authentication
                                                 .anyRequest().authenticated())

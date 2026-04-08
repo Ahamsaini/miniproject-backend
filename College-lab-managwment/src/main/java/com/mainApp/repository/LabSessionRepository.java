@@ -24,20 +24,41 @@ public interface LabSessionRepository extends JpaRepository<LabSession, String> 
 
         @org.springframework.data.jpa.repository.EntityGraph(attributePaths = { "lab", "subject", "subject.course",
                         "teacher" })
-        @org.springframework.data.jpa.repository.Query("SELECT s FROM LabSession s " +
+        @org.springframework.data.jpa.repository.Query(value = "SELECT DISTINCT s FROM LabSession s " +
+                        "LEFT JOIN s.lab l " +
+                        "LEFT JOIN s.subject sub " +
+                        "LEFT JOIN sub.course c " +
+                        "LEFT JOIN s.teacher t " +
                         "WHERE " +
                         "(:status IS NULL OR s.status = :status) AND " +
-                        "(:courseId IS NULL OR s.subject.course.id = :courseId) AND " +
-                        "(:semester IS NULL OR s.subject.semesterNumber = :semester) AND " +
+                        "(:courseId IS NULL OR c.id = :courseId) AND " +
+                        "(:semester IS NULL OR sub.semesterNumber = :semester) AND " +
                         "(:section IS NULL OR s.section = :section) AND " +
-                        "(:subjectId IS NULL OR s.subject.id = :subjectId) AND " +
+                        "(:subjectId IS NULL OR sub.id = :subjectId) AND " +
                         "(:sessionDate IS NULL OR s.sessionDate = :sessionDate) AND " +
                         "(:keyword IS NULL OR :keyword = '' OR " +
-                        "LOWER(s.lab.labName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-                        "LOWER(s.subject.subjectName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-                        "LOWER(s.teacher.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-                        "LOWER(s.teacher.lastName) LIKE LOWER(CONCAT('%', :keyword, '%')))  " +
-                        "ORDER BY s.sessionDate DESC, s.startTime DESC")
+                        "LOWER(l.labName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                        "LOWER(sub.subjectName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                        "LOWER(t.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                        "LOWER(t.lastName) LIKE LOWER(CONCAT('%', :keyword, '%')))  " +
+                        "ORDER BY s.sessionDate DESC, s.startTime DESC", 
+                        countQuery = "SELECT COUNT(DISTINCT s) FROM LabSession s " +
+                        "LEFT JOIN s.lab l " +
+                        "LEFT JOIN s.subject sub " +
+                        "LEFT JOIN sub.course c " +
+                        "LEFT JOIN s.teacher t " +
+                        "WHERE " +
+                        "(:status IS NULL OR s.status = :status) AND " +
+                        "(:courseId IS NULL OR c.id = :courseId) AND " +
+                        "(:semester IS NULL OR sub.semesterNumber = :semester) AND " +
+                        "(:section IS NULL OR s.section = :section) AND " +
+                        "(:subjectId IS NULL OR sub.id = :subjectId) AND " +
+                        "(:sessionDate IS NULL OR s.sessionDate = :sessionDate) AND " +
+                        "(:keyword IS NULL OR :keyword = '' OR " +
+                        "LOWER(l.labName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                        "LOWER(sub.subjectName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                        "LOWER(t.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                        "LOWER(t.lastName) LIKE LOWER(CONCAT('%', :keyword, '%')))")
         org.springframework.data.domain.Page<LabSession> searchSessions(
                         @org.springframework.data.repository.query.Param("status") com.mainApp.roles.LabSessionStatus status,
                         @org.springframework.data.repository.query.Param("courseId") String courseId,

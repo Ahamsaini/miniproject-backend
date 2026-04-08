@@ -81,6 +81,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public SubjectResponse getSubjectById(String id) {
         Subject subject = subjectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + id));
@@ -95,11 +96,13 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<SubjectResponse> getAllSubjects(Pageable pageable) {
         return subjectRepository.findAll(pageable).map(subjectMapper::toResponse);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<SubjectResponse> getSubjectsBySemester(Integer semester, Pageable pageable) {
         // This would require a custom query in repository if not already there
         return subjectRepository.findBySemesterNumber(semester, pageable)
@@ -107,6 +110,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<SubjectResponse> getSubjectsByCourse(String courseId, Pageable pageable) {
         return subjectRepository.findByCourseId(courseId, pageable).map(subjectMapper::toResponse);
     }
@@ -271,6 +275,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<SubjectResponse> searchSubjects(String keyword, Pageable pageable) {
         return subjectRepository.searchSubjects(keyword, pageable).map(subjectMapper::toResponse);
     }

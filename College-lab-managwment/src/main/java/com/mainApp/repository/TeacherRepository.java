@@ -24,12 +24,20 @@ public interface TeacherRepository extends JpaRepository<Teacher, String> {
 
         List<Teacher> findByIsActive(Boolean isActive);
 
-        @Query("SELECT t FROM Teacher t WHERE " +
+        @Query(value = "SELECT t FROM Teacher t WHERE " +
+                        "(:keyword IS NULL OR " +
                         "LOWER(t.employeeId) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
                         "LOWER(t.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
                         "LOWER(t.lastName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
                         "LOWER(t.department) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-                        "LOWER(t.specialization) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+                        "LOWER(t.specialization) LIKE LOWER(CONCAT('%', :keyword, '%')))", countQuery = "SELECT COUNT(t) FROM Teacher t WHERE "
+                                        +
+                                        "(:keyword IS NULL OR " +
+                                        "LOWER(t.employeeId) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                                        "LOWER(t.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                                        "LOWER(t.lastName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                                        "LOWER(t.department) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                                        "LOWER(t.specialization) LIKE LOWER(CONCAT('%', :keyword, '%')))")
         org.springframework.data.domain.Page<Teacher> searchTeachers(@Param("keyword") String keyword,
                         org.springframework.data.domain.Pageable pageable);
 
@@ -42,13 +50,20 @@ public interface TeacherRepository extends JpaRepository<Teacher, String> {
         @Query("SELECT COUNT(t) FROM Teacher t WHERE t.department = :department")
         long countByDepartment(@Param("department") String department);
 
-        @Query("SELECT t FROM Teacher t WHERE t.isApproved = false AND t.isActive = true AND " +
+        @Query(value = "SELECT t FROM Teacher t WHERE t.isApproved = false AND t.isActive = true AND " +
                         "(:department IS NULL OR t.department = :department) AND " +
                         "(:keyword IS NULL OR " +
                         "LOWER(t.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
                         "LOWER(t.lastName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
                         "LOWER(t.employeeId) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-                        "LOWER(t.username) LIKE LOWER(CONCAT('%', :keyword, '%')))")
+                        "LOWER(t.username) LIKE LOWER(CONCAT('%', :keyword, '%')))", countQuery = "SELECT COUNT(t) FROM Teacher t WHERE t.isApproved = false AND t.isActive = true AND "
+                                        +
+                                        "(:department IS NULL OR t.department = :department) AND " +
+                                        "(:keyword IS NULL OR " +
+                                        "LOWER(t.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                                        "LOWER(t.lastName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                                        "LOWER(t.employeeId) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                                        "LOWER(t.username) LIKE LOWER(CONCAT('%', :keyword, '%')))")
         org.springframework.data.domain.Page<Teacher> findPendingTeachers(
                         @Param("department") String department,
                         @Param("keyword") String keyword,

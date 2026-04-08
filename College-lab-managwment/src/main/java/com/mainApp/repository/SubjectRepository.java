@@ -24,7 +24,11 @@ public interface SubjectRepository extends JpaRepository<Subject, String> {
 
     Page<Subject> findBySemesterNumber(Integer semesterNumber, Pageable pageable);
 
-    @Query("SELECT s FROM Subject s WHERE " +
+    @Query(value = "SELECT s FROM Subject s WHERE " +
+            "LOWER(s.subjectCode) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(s.subjectName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(s.description) LIKE LOWER(CONCAT('%', :keyword, '%'))",
+            countQuery = "SELECT COUNT(s) FROM Subject s WHERE " +
             "LOWER(s.subjectCode) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(s.subjectName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(s.description) LIKE LOWER(CONCAT('%', :keyword, '%'))")

@@ -92,7 +92,12 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @Transactional(readOnly = true)
     public Page<StudentResponse> getAllStudents(String courseId, Integer semester, String keyword, Pageable pageable) {
-        return studentRepository.searchStudents(courseId, semester, keyword, pageable).map(studentMapper::toResponse);
+        // Sanitize parameters: convert empty strings from frontend to null so JPA handles them correctly
+        String sanitizedCourseId = (courseId != null && courseId.trim().isEmpty()) ? null : courseId;
+        String sanitizedKeyword = (keyword != null && keyword.trim().isEmpty()) ? null : keyword;
+
+        return studentRepository.searchStudents(sanitizedCourseId, semester, sanitizedKeyword, pageable)
+                .map(studentMapper::toResponse);
     }
 
     @Override

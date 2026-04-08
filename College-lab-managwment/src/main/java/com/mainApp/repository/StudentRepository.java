@@ -53,7 +53,7 @@ public interface StudentRepository extends JpaRepository<Student, String> {
                         @Param("semester") Integer semester,
                         @Param("section") String section);
 
-        @Query("SELECT s FROM Student s LEFT JOIN s.course c WHERE " +
+        @Query(value = "SELECT s FROM Student s LEFT JOIN s.course c WHERE " +
                         "(:courseId IS NULL OR c.id = :courseId) AND " +
                         "(:semester IS NULL OR s.currentSemester = :semester) AND " +
                         "(:keyword IS NULL OR " +
@@ -61,7 +61,16 @@ public interface StudentRepository extends JpaRepository<Student, String> {
                         "LOWER(s.registrationNumber) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
                         "LOWER(s.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
                         "LOWER(s.lastName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-                        "LOWER(s.guardianName) LIKE LOWER(CONCAT('%', :keyword, '%')))")
+                        "LOWER(s.guardianName) LIKE LOWER(CONCAT('%', :keyword, '%')))", countQuery = "SELECT COUNT(s) FROM Student s LEFT JOIN s.course c WHERE "
+                                        +
+                                        "(:courseId IS NULL OR c.id = :courseId) AND " +
+                                        "(:semester IS NULL OR s.currentSemester = :semester) AND " +
+                                        "(:keyword IS NULL OR " +
+                                        "LOWER(s.rollNumber) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                                        "LOWER(s.registrationNumber) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                                        "LOWER(s.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                                        "LOWER(s.lastName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                                        "LOWER(s.guardianName) LIKE LOWER(CONCAT('%', :keyword, '%')))")
         org.springframework.data.domain.Page<Student> searchStudents(
                         @Param("courseId") String courseId,
                         @Param("semester") Integer semester,
@@ -80,14 +89,23 @@ public interface StudentRepository extends JpaRepository<Student, String> {
         @Query("SELECT s FROM Student s WHERE s.rollNumber IS NULL OR s.rollNumber = '' OR s.registrationNumber IS NULL OR s.registrationNumber = ''")
         List<Student> findUnassignedStudents();
 
-        @Query("SELECT s FROM Student s LEFT JOIN s.course c WHERE s.isApproved = false AND s.isActive = true AND " +
+        @Query(value = "SELECT s FROM Student s LEFT JOIN s.course c WHERE s.isApproved = false AND s.isActive = true AND "
+                        +
                         "(:courseId IS NULL OR c.id = :courseId) AND " +
                         "(:semester IS NULL OR s.currentSemester = :semester) AND " +
                         "(:department IS NULL OR c.department = :department) AND " +
                         "(:keyword IS NULL OR " +
                         "LOWER(s.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
                         "LOWER(s.lastName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-                        "LOWER(s.username) LIKE LOWER(CONCAT('%', :keyword, '%')))")
+                        "LOWER(s.username) LIKE LOWER(CONCAT('%', :keyword, '%')))", countQuery = "SELECT COUNT(s) FROM Student s LEFT JOIN s.course c WHERE s.isApproved = false AND s.isActive = true AND "
+                                        +
+                                        "(:courseId IS NULL OR c.id = :courseId) AND " +
+                                        "(:semester IS NULL OR s.currentSemester = :semester) AND " +
+                                        "(:department IS NULL OR c.department = :department) AND " +
+                                        "(:keyword IS NULL OR " +
+                                        "LOWER(s.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                                        "LOWER(s.lastName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                                        "LOWER(s.username) LIKE LOWER(CONCAT('%', :keyword, '%')))")
         Page<Student> findPendingStudents(
                         @Param("courseId") String courseId,
                         @Param("semester") Integer semester,

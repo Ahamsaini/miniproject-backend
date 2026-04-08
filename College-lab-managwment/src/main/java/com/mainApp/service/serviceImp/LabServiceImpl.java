@@ -94,6 +94,7 @@ public class LabServiceImpl implements LabService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public LabResponse getLabById(String id) {
         Lab lab = labRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Lab not found with id: " + id));
@@ -108,16 +109,19 @@ public class LabServiceImpl implements LabService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<LabResponse> getAllLabs(Pageable pageable) {
         return labRepository.findAll(pageable).map(labMapper::toResponse);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<LabResponse> getLabsByType(String type, Pageable pageable) {
         return labRepository.findByLabType(LabType.valueOf(type), pageable).map(labMapper::toResponse);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<LabResponse> getLabsByBuilding(String building, Pageable pageable) {
         return labRepository.findByBuilding(building, pageable).map(labMapper::toResponse);
     }
@@ -188,6 +192,7 @@ public class LabServiceImpl implements LabService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public LabSessionResponse getLabSessionById(String sessionId) {
         LabSession session = labSessionRepository.findById(sessionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Lab session not found with id: " + sessionId));
@@ -195,6 +200,7 @@ public class LabServiceImpl implements LabService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<LabSessionResponse> getLabSessions(String labId) {
         return labSessionRepository.findByLabId(labId).stream()
                 .map(labSessionMapper::toResponse)
@@ -202,6 +208,7 @@ public class LabServiceImpl implements LabService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<LabSessionResponse> getLabSessionsByDate(String labId, LocalDate date) {
         return labSessionRepository.findByLabIdAndSessionDate(labId, date).stream()
                 .map(labSessionMapper::toResponse)
@@ -209,6 +216,7 @@ public class LabServiceImpl implements LabService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<LabSessionResponse> getLabSessionsByTeacher(String labId, String teacherId) {
         return labSessionRepository.findByTeacherId(teacherId).stream()
                 .filter(s -> s.getLab().getId().equals(labId))
@@ -629,11 +637,13 @@ public class LabServiceImpl implements LabService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<LabResponse> searchLabs(String keyword, Pageable pageable) {
         return labRepository.searchLabs(keyword, pageable).map(labMapper::toResponse);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<LabSessionResponse> getAllSessions(LabSessionStatus status, String courseId, Integer semester,
             String section, String subjectId, java.time.LocalDate sessionDate, String keyword, Pageable pageable) {
         return labSessionRepository
