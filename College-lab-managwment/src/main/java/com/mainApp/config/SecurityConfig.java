@@ -152,7 +152,8 @@ public class SecurityConfig {
                                 "http://api.aham-sug-lab.work.gd",
                                 "https://web.aham-sug-lab.work.gd",
                                 "http://web.aham-sug-lab.work.gd",
-                                "https://miniproject-frountend-zxir.vercel.app"));
+                                "https://miniproject-frountend-zxir.vercel.app",
+                                "https://miniproject-backend-production-6861.up.railway.app"));
 
                 configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 configuration.setAllowedHeaders(List.of("*")); // Allow all headers
