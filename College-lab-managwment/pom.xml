@@ -11,7 +11,7 @@
 	<groupId>com.Aham</groupId>
 	<artifactId>College-lab-managwment</artifactId>
 	<version>Aham_System_Menagement</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>College-lab-managwment</name>
 	<description>Spring Boot REST API For the online food</description>
 	<url/>
@@ -94,11 +94,6 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
