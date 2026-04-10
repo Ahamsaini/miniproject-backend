@@ -264,8 +264,10 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<CourseResponse> searchCourses(String keyword, Pageable pageable) {
-        return courseRepository.searchCourses(keyword, pageable).map(courseMapper::toResponse);
+        String sanitizedKeyword = (keyword == null || keyword.trim().isEmpty()) ? null : "%" + keyword.trim().toLowerCase() + "%";
+        return courseRepository.searchCourses(sanitizedKeyword, pageable).map(courseMapper::toResponse);
     }
 
     @Override

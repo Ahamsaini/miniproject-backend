@@ -484,7 +484,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public Page<UserResponse> searchUsers(String keyword, org.springframework.data.domain.Pageable pageable) {
-        return userRepository.searchUsers(keyword, pageable)
+        String sanitizedKeyword = (keyword == null || keyword.trim().isEmpty()) ? null : "%" + keyword.trim().toLowerCase() + "%";
+        return userRepository.searchUsers(sanitizedKeyword, pageable)
                 .map(this::mapUserToResponse);
     }
 

@@ -94,7 +94,7 @@ public class StudentServiceImpl implements StudentService {
     public Page<StudentResponse> getAllStudents(String courseId, Integer semester, String keyword, Pageable pageable) {
         // Sanitize parameters: convert empty strings from frontend to null so JPA handles them correctly
         String sanitizedCourseId = (courseId != null && courseId.trim().isEmpty()) ? null : courseId;
-        String sanitizedKeyword = (keyword != null && keyword.trim().isEmpty()) ? null : keyword;
+        String sanitizedKeyword = (keyword == null || keyword.trim().isEmpty()) ? null : "%" + keyword.trim().toLowerCase() + "%";
 
         return studentRepository.searchStudents(sanitizedCourseId, semester, sanitizedKeyword, pageable)
                 .map(studentMapper::toResponse);
@@ -408,8 +408,10 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<StudentResponse> searchStudents(String keyword, Pageable pageable) {
-        return studentRepository.searchStudents(null, null, keyword, pageable).map(studentMapper::toResponse);
+        String sanitizedKeyword = (keyword == null || keyword.trim().isEmpty()) ? null : "%" + keyword.trim().toLowerCase() + "%";
+        return studentRepository.searchStudents(null, null, sanitizedKeyword, pageable).map(studentMapper::toResponse);
     }
 
     @Override
@@ -432,7 +434,7 @@ public class StudentServiceImpl implements StudentService {
         // Sanitize parameters: convert empty strings from frontend to null so JPA handles them correctly
         String sanitizedCourseId = (courseId != null && courseId.trim().isEmpty()) ? null : courseId;
         String sanitizedDepartment = (department != null && department.trim().isEmpty()) ? null : department;
-        String sanitizedKeyword = (keyword != null && keyword.trim().isEmpty()) ? null : keyword;
+        String sanitizedKeyword = (keyword == null || keyword.trim().isEmpty()) ? null : "%" + keyword.trim().toLowerCase() + "%";
 
         return studentRepository.findPendingStudents(sanitizedCourseId, semester, sanitizedDepartment, sanitizedKeyword,
                 pageable)

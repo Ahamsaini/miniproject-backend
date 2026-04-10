@@ -277,7 +277,8 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     @Transactional(readOnly = true)
     public Page<SubjectResponse> searchSubjects(String keyword, Pageable pageable) {
-        return subjectRepository.searchSubjects(keyword, pageable).map(subjectMapper::toResponse);
+        String sanitizedKeyword = (keyword == null || keyword.trim().isEmpty()) ? null : "%" + keyword.trim().toLowerCase() + "%";
+        return subjectRepository.searchSubjects(sanitizedKeyword, pageable).map(subjectMapper::toResponse);
     }
 
     @Override

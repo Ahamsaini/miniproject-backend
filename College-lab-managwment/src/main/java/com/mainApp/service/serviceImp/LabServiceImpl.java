@@ -639,15 +639,17 @@ public class LabServiceImpl implements LabService {
     @Override
     @Transactional(readOnly = true)
     public Page<LabResponse> searchLabs(String keyword, Pageable pageable) {
-        return labRepository.searchLabs(keyword, pageable).map(labMapper::toResponse);
+        String sanitizedKeyword = (keyword == null || keyword.trim().isEmpty()) ? null : "%" + keyword.trim().toLowerCase() + "%";
+        return labRepository.searchLabs(sanitizedKeyword, pageable).map(labMapper::toResponse);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<LabSessionResponse> getAllSessions(LabSessionStatus status, String courseId, Integer semester,
             String section, String subjectId, java.time.LocalDate sessionDate, String keyword, Pageable pageable) {
+        String sanitizedKeyword = (keyword == null || keyword.trim().isEmpty()) ? null : "%" + keyword.trim().toLowerCase() + "%";
         return labSessionRepository
-                .searchSessions(status, courseId, semester, section, subjectId, sessionDate, keyword, pageable)
+                .searchSessions(status, courseId, semester, section, subjectId, sessionDate, sanitizedKeyword, pageable)
                 .map(labSessionMapper::toResponse);
     }
 

@@ -22,10 +22,10 @@ public interface LabRepository extends JpaRepository<Lab, String> {
     Page<Lab> findByBuilding(String building, Pageable pageable);
 
     @Query("SELECT l FROM Lab l WHERE " +
-            "LOWER(l.labCode) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(l.labName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(l.building) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(l.roomNumber) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+            "LOWER(l.labCode) LIKE :keyword OR " +
+            "LOWER(l.labName) LIKE :keyword OR " +
+            "LOWER(l.building) LIKE :keyword OR " +
+            "LOWER(l.roomNumber) LIKE :keyword")
     Page<Lab> searchLabs(@Param("keyword") String keyword, Pageable pageable);
 
     @Query("SELECT DISTINCT l FROM Lab l " +

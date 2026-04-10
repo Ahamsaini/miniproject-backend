@@ -377,7 +377,8 @@ public class TeacherServiceImpl implements TeacherService {
         @Override
         @Transactional(readOnly = true)
         public Page<TeacherResponse> searchTeachers(String keyword, Pageable pageable) {
-                return teacherRepository.searchTeachers(keyword, pageable).map(teacherMapper::toResponse);
+                String sanitizedKeyword = (keyword == null || keyword.trim().isEmpty()) ? null : "%" + keyword.trim().toLowerCase() + "%";
+                return teacherRepository.searchTeachers(sanitizedKeyword, pageable).map(teacherMapper::toResponse);
         }
 
         @Override
@@ -441,7 +442,7 @@ public class TeacherServiceImpl implements TeacherService {
                 // Sanitize parameters: convert empty strings from frontend to null so JPA
                 // handles them correctly
                 String sanitizedDepartment = (department != null && department.trim().isEmpty()) ? null : department;
-                String sanitizedKeyword = (keyword != null && keyword.trim().isEmpty()) ? null : keyword;
+                String sanitizedKeyword = (keyword == null || keyword.trim().isEmpty()) ? null : "%" + keyword.trim().toLowerCase() + "%";
 
                 return teacherRepository.findPendingTeachers(sanitizedDepartment, sanitizedKeyword, pageable)
                                 .map(teacherMapper::toResponse);
