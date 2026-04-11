@@ -647,6 +647,23 @@ public class LabServiceImpl implements LabService {
     @Transactional(readOnly = true)
     public Page<LabSessionResponse> getAllSessions(LabSessionStatus status, String courseId, Integer semester,
             String section, String subjectId, java.time.LocalDate sessionDate, String keyword, Pageable pageable) {
+        
+        // SYSTEM AUDIT LOG
+        if (status == LabSessionStatus.ONGOING) {
+            System.out.println("DEBUG: [System Audit] ACTIVE LAB SEARCH HIT. Status=ONGOING, CourseID=" + courseId);
+        }
+
+        // Optimization: For 'ONGOING' status, use a simpler course-wide lookup if courseId is available
+        // This bypasses strict section/semester filters for live labs.
+        if (status == LabSessionStatus.ONGOING && courseId != null && (keyword == null || keyword.isEmpty())) {
+            List<LabSession> ongoingSessions = labSessionRepository.findBySubjectCourseIdAndStatus(courseId, status);
+            return new org.springframework.data.domain.PageImpl<>(
+                ongoingSessions.stream().map(labSessionMapper::toResponse).collect(java.util.stream.Collectors.toList()),
+                pageable,
+                ongoingSessions.size()
+            );
+        }
+
         String sanitizedKeyword = (keyword == null || keyword.trim().isEmpty()) ? null : "%" + keyword.trim().toLowerCase() + "%";
         return labSessionRepository
                 .searchSessions(status, courseId, semester, section, subjectId, sessionDate, sanitizedKeyword, pageable)

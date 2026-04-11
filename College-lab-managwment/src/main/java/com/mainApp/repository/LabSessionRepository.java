@@ -32,10 +32,10 @@ public interface LabSessionRepository extends JpaRepository<LabSession, String> 
                         "WHERE " +
                         "(:status IS NULL OR s.status = :status) AND " +
                         "(:courseId IS NULL OR c.id = :courseId) AND " +
-                        "(:semester IS NULL OR sub.semesterNumber = :semester) AND " +
-                        "(:section IS NULL OR s.section = :section) AND " +
+                        "(:semester IS NULL OR sub.semesterNumber = :semester OR s.status = 'ONGOING') AND " +
+                        "(:section IS NULL OR :section = '' OR s.section = :section OR s.section = 'ALL' OR s.section IS NULL OR s.section = '' OR s.status = 'ONGOING') AND " +
                         "(:subjectId IS NULL OR sub.id = :subjectId) AND " +
-                        "(:#{#sessionDate == null} = true OR s.sessionDate = :sessionDate) AND " +
+                        "(:#{#sessionDate == null} = true OR s.sessionDate = :sessionDate OR s.status = 'ONGOING') AND " +
                         "(:keyword IS NULL OR :keyword = '' OR " +
                         "LOWER(l.labName) LIKE :keyword OR " +
                         "LOWER(sub.subjectName) LIKE :keyword OR " +
@@ -50,10 +50,10 @@ public interface LabSessionRepository extends JpaRepository<LabSession, String> 
                         "WHERE " +
                         "(:status IS NULL OR s.status = :status) AND " +
                         "(:courseId IS NULL OR c.id = :courseId) AND " +
-                        "(:semester IS NULL OR sub.semesterNumber = :semester) AND " +
-                        "(:section IS NULL OR s.section = :section) AND " +
+                        "(:semester IS NULL OR sub.semesterNumber = :semester OR s.status = 'ONGOING') AND " +
+                        "(:section IS NULL OR :section = '' OR s.section = :section OR s.section = 'ALL' OR s.section IS NULL OR s.section = '' OR s.status = 'ONGOING') AND " +
                         "(:subjectId IS NULL OR sub.id = :subjectId) AND " +
-                        "(:#{#sessionDate == null} = true OR s.sessionDate = :sessionDate) AND " +
+                        "(:#{#sessionDate == null} = true OR s.sessionDate = :sessionDate OR s.status = 'ONGOING') AND " +
                         "(:keyword IS NULL OR :keyword = '' OR " +
                         "LOWER(l.labName) LIKE :keyword OR " +
                         "LOWER(sub.subjectName) LIKE :keyword OR " +
@@ -79,4 +79,7 @@ public interface LabSessionRepository extends JpaRepository<LabSession, String> 
         List<LabSession> findBySubjectIdAndSubjectSemesterNumberAndSubjectCourseIdAndStatus(
                         String subjectId, Integer semesterNumber, String courseId,
                         com.mainApp.roles.LabSessionStatus status);
+
+        @org.springframework.data.jpa.repository.EntityGraph(attributePaths = { "lab", "subject", "subject.course", "teacher" })
+        List<LabSession> findBySubjectCourseIdAndStatus(String courseId, com.mainApp.roles.LabSessionStatus status);
 }
