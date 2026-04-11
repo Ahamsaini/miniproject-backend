@@ -37,6 +37,29 @@ public class AttendanceMapper {
             com.mainApp.responcedto.LabSessionResponse sessionRes = new com.mainApp.responcedto.LabSessionResponse();
             sessionRes.setId(attendance.getLabSession().getId());
             sessionRes.setSessionDate(attendance.getLabSession().getSessionDate());
+            sessionRes.setStartTime(attendance.getLabSession().getStartTime());
+            sessionRes.setEndTime(attendance.getLabSession().getEndTime());
+            sessionRes.setExperimentName(attendance.getLabSession().getExperimentName());
+            sessionRes.setSessionTopic(attendance.getLabSession().getSessionTopic());
+            
+            // Manual mapping for Lab to avoid circular dependencies
+            if (attendance.getLabSession().getLab() != null) {
+                com.mainApp.responcedto.LabResponse labRes = new com.mainApp.responcedto.LabResponse();
+                labRes.setId(attendance.getLabSession().getLab().getId());
+                labRes.setLabName(attendance.getLabSession().getLab().getLabName());
+                labRes.setRoomNumber(attendance.getLabSession().getLab().getRoomNumber());
+                sessionRes.setLab(labRes);
+            }
+            
+            // Manual mapping for Subject to avoid circular dependencies
+            if (attendance.getLabSession().getSubject() != null) {
+                com.mainApp.responcedto.SubjectResponse subRes = new com.mainApp.responcedto.SubjectResponse();
+                subRes.setId(attendance.getLabSession().getSubject().getId());
+                subRes.setSubjectName(attendance.getLabSession().getSubject().getSubjectName());
+                subRes.setSubjectCode(attendance.getLabSession().getSubject().getSubjectCode());
+                sessionRes.setSubject(subRes);
+            }
+            
             res.setLabSession(sessionRes);
         }
 
